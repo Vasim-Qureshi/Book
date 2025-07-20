@@ -3,8 +3,8 @@ import Book from '../models/Book.js';
 
 // Add to cart
 export const addToCart = async (req, res) => {
-  const { productId, quantity } = req.body;
-  const userId = req.user._id;
+  const { productId, quantity, userId } = req.body;
+  // const userId = req.user._id;
   try {
     let cartItem = await CartItem.findOne({ userId, productId });
 
@@ -24,8 +24,9 @@ export const addToCart = async (req, res) => {
 
 // Get cart items
 export const getCartItems = async (req, res) => {
+  const userId = req.user._id;
   try {
-    const cartItems = await CartItem.find({ userId: req.user._id }).populate('productId');
+    const cartItems = await CartItem.find({ userId }).populate('productId');
     res.json(cartItems);
   } catch (error) {
     res.status(500).json({ message: 'Error fetching cart items', error });

@@ -15,11 +15,11 @@ import ProtectedRoute from './components/ProtectedRoute';
 import Navbar from './components/Navbar';
 import CategoryBooksPage from './pages/CategoryBooksPage';
 import SearchPage from './pages/SearchPage';
-// import AddToCart from './pages/AddToCart';
 import CheckOut from './pages/CheckOut';
 import ReceiptPage from './pages/ReceiptPage';
 import OrdersHistory from './pages/OrderHistory';
 import CartPage from './pages/CartPage';
+
 
 const App = () => {
   return (

@@ -1,56 +1,73 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { logout as LogOut } from '../services/authService';
+import SideMenu from './SideBar';
+import { FaBars } from 'react-icons/fa';
 
 const Navbar: React.FC = () => {
   const { isAuthenticated, user, logout } = useAuth();
   const navigate = useNavigate();
 
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const toggleSidebar = () => setIsSidebarOpen((prev) => !prev);
 
   const handleLogout = async () => {
     try {
       if (user) {
-        // Call the logout service with the user ID
         LogOut({ userId: user.id });
-        logout(); // Clear the user state in context
+        logout();
       }
-      // Redirect or update UI on successful logout
       navigate('/login');
       localStorage.removeItem('token');
     } catch (error) {
-      // Handle the error, e.g., display an error message to the user
       alert('Logout failed. Please try again.');
     }
   };
+
   return (
-    <nav className="bg-blue-600 text-white p-4 flex justify-between items-center">
-      <Link to="/" className="text-xl font-bold">📚 BookStore</Link>
+    <div className='sticky top-0 z-50 h-30 flex flex-col'>
+      {/* 🔝 Top Navbar */}
+      {/* 📱 Mobile Menu Button */}
+      {/* 🟦 Navbar */}
+      <nav className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center shadow-md">
+        <div className="flex items-center gap-4">
+          {/* 🍔 Menu Button for Mobile */}
+          <button onClick={toggleSidebar} className="md:hidden text-white">
+            <FaBars size={20} />
+          </button>
+          <Link to="/" className="text-xl font-bold">📚 BookStore</Link>
+        </div>
 
-      <div className="space-x-4">
-        {!isAuthenticated && (
-          <>
-            <Link to="/login" className="hover:underline">Login</Link>
-            <Link to="/signup" className="hover:underline">Signup</Link>
-          </>
-        )}
+        <div className="space-x-4 text-sm hidden md:flex">
+          {!isAuthenticated ? (
+            <>
+              <Link to="/login" className="hover:underline">Login</Link>
+              <Link to="/signup" className="hover:underline">Signup</Link>
+            </>
+          ) : (
+            <>
+              <span>| Role: {user?.isAdmin ? 'Admin' : 'User'}</span>
+              <span>|</span>
+              {user?.isAdmin ? (
+                <Link to="/admin" className="hover:underline">Admin Dashboard</Link>
+              ) : (
+                <Link to="/user" className="hover:underline">User Dashboard</Link>
+              )}
+              <button
+                onClick={handleLogout}
+                className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-blue-100 ml-2"
+              >
+                Logout
+              </button>
+            </>
+          )}
+        </div>
+      </nav>
 
-        {isAuthenticated && (
-          <>
-            <span className="mx-2">|</span><span className="text-sm">Role: {user?.isAdmin ? 'Admin' : 'User'}</span>
-            <span className="mx-2">|</span>
-            {user?.isAdmin ? (
-              <Link to="/admin" className="hover:underline">Admin Dashboard</Link>
-            ) : (
-              <Link to="/user" className="hover:underline">User Dashboard</Link>
-            )}
-            <button onClick={handleLogout} className="bg-white text-blue-600 px-3 py-1 rounded ml-2">
-              Logout
-            </button>
-          </>
-        )}
-      </div>
-    </nav>
+      {/* 📱 SideMenu (Animated) */}
+      <SideMenu isOpen={isSidebarOpen} toggleSidebar={toggleSidebar} />
+    </div>
   );
 };
 

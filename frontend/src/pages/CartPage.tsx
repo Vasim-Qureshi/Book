@@ -8,6 +8,7 @@ import {
     updateCartQuantityAPI,
     removeCartItemAPI,
 } from '../services/cartServices';
+import { useAuth } from '../context/AuthContext'; // Import Auth context
 
 
 interface CartItem {
@@ -31,9 +32,18 @@ const CartPage: React.FC = () => {
     const [cartItems, setCartItems] = useState<CartItem[]>([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const { user } = useAuth(); // Get user from Auth context
 
     useEffect(() => {
-        fetchCart();
+        if (!user) {
+            alert('You must be logged in to view the cart.');
+            navigate('/login'); // Redirect to login if not authenticated
+            return;
+        } else {
+            console.log('User in CartPage:', user);
+            fetchCart();
+
+        }
     }, []);
 
     const fetchCart = async () => {
@@ -41,7 +51,7 @@ const CartPage: React.FC = () => {
         const res = await getCartItemsAPI();
         const data = await res.json();
         console.log('Fetched cart items:', data);
-        
+
         if (res.ok) {
             setCartItems(data);
         } else {
@@ -50,7 +60,7 @@ const CartPage: React.FC = () => {
         }
         setLoading(false);
     };
-    
+
     const handleIncrease = async (itemId: string) => {
         await updateCartQuantityAPI(itemId, 1);
         fetchCart();
@@ -78,7 +88,7 @@ const CartPage: React.FC = () => {
             Id: item._id,
             user: item.userId,
             // title: item.productId.title,
-            price: item.productId.price,    
+            price: item.productId.price,
             quantity: item.quantity
         })));
         navigate("/checkout", { state: { cartItems, total } }); // Pass cart items and total to checkout

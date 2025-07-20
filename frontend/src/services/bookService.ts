@@ -1,11 +1,13 @@
 // src/services/bookService.ts
-const API = import.meta.env.VITE_API || 'http://localhost:5000/api';
+
+const URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
+
 const token = () => localStorage.getItem('token');
 
 // ===========================================================================================================================
 // Fetch books by category
 export const addBook = (book: { title: string; author: string; price: string; description: string; imageUrl: string; }) => {
-  return fetch(`${API}/books`, {
+  return fetch(`${URL}/api/books`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -30,7 +32,7 @@ export type Book = {
 // Bulk add books
 export const bulkAddBooks = (books: Book[]) => {
   console.log('Bulk adding books:', books);
-  return fetch(`${API}/books/bulk`, {
+  return fetch(`${URL}/api/books/bulk`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -44,15 +46,15 @@ export const bulkAddBooks = (books: Book[]) => {
 
 // Fetch all books
 export const getAllBooks = () => {
-  return fetch(`${API}/books`);
+  return fetch(`${URL}/api/books`);
 };
 
 //===========================================================================================================================
 
 // Uncomment the following if you want to use category filtering without search
 // export const getBooks = async (category?: string) => {
-//   const url = category ? `category=${category}` : `/api/books`;
-// return fetch(`${API}?${url}`);
+//   const url = category ? `category=${category}` : `/URL/books`;
+// return fetch(`${URL}?${url}`);
 // };
 
 // =========================================================================================================================
@@ -62,20 +64,20 @@ export const getBooks = async (category?: string, search?: string) => {
   if (category) params.append('category', category);
   if (search) params.append('search', search);
 
-  return fetch(`${API}/books?${params.toString()}`);
+  return fetch(`${URL}/api/books?${params.toString()}`);
 };
 
 // ============================================================================================================================
 // Fetch a single book by ID
 export const getBookById = (id: string) => {
-  return fetch(`${API}/books/${id}`);
+  return fetch(`${URL}/api/books/${id}`);
 };
 
 
 // ============================================================================================================================
 // Update a book by ID
 export const updateBook = (book: { id: string; title: string; author: string; price: string; description: string; imageUrl: string; }) => {
-  return fetch(`${API}/books/${book.id}`, {
+  return fetch(`${URL}/api/books/${book.id}`, {
     method: 'PUT',
     headers: {
       'Content-Type': 'application/json',
@@ -88,7 +90,7 @@ export const updateBook = (book: { id: string; title: string; author: string; pr
 // ============================================================================================================================
 // Delete a book by ID
 export const deleteBook = (id: string) => {
-  return fetch(`${API}/books/${id}`, {
+  return fetch(`${URL}/api/books/${id}`, {
     method: 'DELETE',
     headers: {
       Authorization: `Bearer ${token()}`

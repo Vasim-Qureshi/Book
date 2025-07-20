@@ -17,8 +17,8 @@ router.get('/', getAllBooks);
 router.get('/:id', getBookById);
 
 // Admin Protected
-router.post('/', protect, adminOnly, addBook);
 router.post('/bulk', protect, adminOnly, bulkAddBooks);
+router.post('/', protect, adminOnly, addBook);
 router.put('/:id', protect, adminOnly, updateBook);
 router.delete('/:id', protect, adminOnly, deleteBook);
 

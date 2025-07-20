@@ -33,8 +33,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
       try {
         const decoded = jwtDecode<DecodedToken>(token);
         setUser(decoded);
-        console.log("Decoded JWT:", decoded); // Log the decoded token for debugging
-        console.log("User state:", user);
+        // console.log("Decoded JWT:", decoded); // Log the decoded token for debugging
+        // console.log("User state:", user);
 
       } catch (err) {
         setToken(null);
@@ -54,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   const logout = () => {
     setUser(null);
     setToken(null);
+    localStorage.removeItem('token'); // <== This is important
   };
 
   // Check if the user is authenticated based on the presence of a token

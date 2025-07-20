@@ -1,8 +1,10 @@
 // src/services/authService.ts
-const AUTH_API = import.meta.env.VITE_API || 'http://localhost:5000/api';
+
+// Define the API base URL
+const URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 
 export const signup = (formData: { name: string; email: string; password: string }) => {
-  return fetch(`${AUTH_API}/auth/signup`, {
+  return fetch(`${URL}/api/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
@@ -10,7 +12,7 @@ export const signup = (formData: { name: string; email: string; password: string
 };
 
 export const login = (formData: { email: string; password: string; status: string }) => {
-  return fetch(`${AUTH_API}/auth/login`, {
+  return fetch(`${URL}/api/auth/login`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(formData)
@@ -18,7 +20,7 @@ export const login = (formData: { email: string; password: string; status: strin
 };
 
 export const sendOtp = (data: { email: string }) => {
-  return fetch(`${AUTH_API}/auth/forgot-password`, {
+  return fetch(`${URL}/api/auth/forgot-password`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -26,7 +28,7 @@ export const sendOtp = (data: { email: string }) => {
 };
 
 export const verifyOtp = (data: { email: string; otp: string; newPassword: string }) => {
-  return fetch(`${AUTH_API}/auth/verify-otp`, {
+  return fetch(`${URL}/api/auth/verify-otp`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(data)
@@ -34,7 +36,7 @@ export const verifyOtp = (data: { email: string; otp: string; newPassword: strin
 };
 
 export const logout = (data: { userId: string }) => {
-  return fetch(`${AUTH_API}/auth/logout`, {
+  return fetch(`${URL}/api/auth/logout`, {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId: data.userId })

@@ -1,35 +1,46 @@
-// src/context/CartContext.tsx
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { getCartItemByIdAPI } from '../services/cartServices';
 
-interface CartItem {
-  _id: string;
-  title: string;
-  price: number;
-  quantity?: number;
+export interface CartItem {
+  id: string;
+  productId: string;
+  quantity: number;
+  userId: string; // Assuming you need userId for the backend
 }
 
 interface CartContextType {
   cartItems: CartItem[];
   setCartItems: React.Dispatch<React.SetStateAction<CartItem[]>>;
-  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [cartItems, setCartItems] = useState<CartItem[]>(() => {
-    const stored = localStorage.getItem('cart');
-    return stored ? JSON.parse(stored) : [];
-  });
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
 
+  // 👇 Fetch cart items by user ID
   useEffect(() => {
-    localStorage.setItem('cart', JSON.stringify(cartItems));
-  }, [cartItems]);
+    const fetchCartItems = async () => {
+      const userId = localStorage.getItem('userId'); // Adjust key as per your app
+      if (!userId) return;
 
-  const clearCart = () => setCartItems([]);
+      try {
+        const res = await getCartItemByIdAPI(userId);
+        if (!res) throw new Error('Failed to fetch cart items');
+        const data = await res.json();
+        setCartItems(data.cartItems || []);
+        localStorage.setItem('cart', JSON.stringify(data.cartItems || []));
+      } catch (error) {
+        console.error('Error fetching cart items:', error);
+      }
+    };
+    fetchCartItems();
+    console.log('Cart items fetched:', cartItems); // Debugging line to check fetched items 
+  }, []);
+
 
   return (
-    <CartContext.Provider value={{ cartItems, setCartItems, clearCart }}>
+    <CartContext.Provider value={{ cartItems, setCartItems}}>
       {children}
     </CartContext.Provider>
   );

@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getBookById } from '../services/bookService';
 import { useCart } from '../context/CartContext';
+import { useAuth } from '../context/AuthContext';
 import { addToCartAPI } from '../services/cartServices'; // ✅ Import API
 
 interface Book {
@@ -18,9 +19,13 @@ interface Book {
 const BookDetailsPage: React.FC = () => {
   const { id } = useParams();
   const [book, setBook] = useState<Book | null>(null);
+  const { cartItems, setCartItems } = useCart();
+  const { user } = useAuth(); // Assuming you have user context for auth
+  console.log('user in BookDetailsPage:', user);
+
+
   const navigate = useNavigate();
 
-  const { cartItems, setCartItems } = useCart();
 
   useEffect(() => {
     const fetchBook = async () => {
@@ -39,34 +44,39 @@ const BookDetailsPage: React.FC = () => {
   // ✅ Add to cart using backend
   const handleAddToCart = async () => {
     if (!book) return;
+    if (!user?.id) {
+      alert('You must be logged in to add items to the cart.');
+      return;
+    }
+
     try {
-      const res = await addToCartAPI({ productId: book._id, quantity: 1 });
-  
+      const res = await addToCartAPI({ productId: book._id, quantity: 1, userId: user.id });
+
       if (!res.ok) {
         throw new Error('Failed to add to cart');
       }
 
-      // Optional: Update local cart context (if needed)
-      const existingItem = cartItems.find(item => item._id === book._id);
-      let updatedCart;
-      if (existingItem) {
-        updatedCart = cartItems.map(item =>
-          item._id === book._id
-            ? { ...item, quantity: (item.quantity || 1) + 1 }
-            : item
-        );
-      } else {
-        updatedCart = [...cartItems, { ...book, quantity: 1 }];
-      }
-
-      setCartItems(updatedCart);
+      // Update cart without mutating existing state
+      setCartItems(prev => {
+        const exists = prev.find(item => item._id === book._id);
+        if (exists) {
+          return prev.map(item =>
+            item._id === book._id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+          );
+        }
+        return [...prev, { ...book, quantity: 1 }];
+      });
+      console.log('Book added to cart:', book);
+      console.log('Updated cart items:', cartItems);
+      
       alert(`Added "${book.title}" to cart!`);
-      navigate('/cart');
+      navigate('/cart'); // Only navigate after cart state is updated
     } catch (err) {
       alert('Something went wrong while adding to cart.');
       console.error(err);
     }
   };
+
 
   if (!book) return <div className="text-center mt-10">Loading book details...</div>;
 
