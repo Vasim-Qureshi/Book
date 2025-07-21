@@ -26,7 +26,7 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className='sticky top-0 z-50 h-30 flex flex-col'>
+    <div className='sticky top-0 z-50 h-30 flex flex-col sm:hidden md:hidden lg:hidden'>
       {/* 🔝 Top Navbar */}
       {/* 📱 Mobile Menu Button */}
       {/* 🟦 Navbar */}
@@ -42,18 +42,18 @@ const Navbar: React.FC = () => {
         <div className="space-x-4 text-sm hidden md:flex">
           {!isAuthenticated ? (
             <>
-              <Link to="/search" className="hover:underline"><input type="text" placeholder="Search Books by Title, Category or Author" className="p-1 rounded" /></Link>
               <Link to="/login" className="hover:underline">Login</Link>
               <Link to="/signup" className="hover:underline">Signup</Link>
             </>
           ) : (
             <>
-              <span>| Role: {user?.isAdmin ? 'Admin' : 'User'}</span>
+              <span>| Role: {user?.isAdmin ? 'Welcome Admin' : 'Welcome User'}</span>
               <span>|</span>
               {user?.isAdmin ? (
                 <Link to="/admin" className="hover:underline">Admin Dashboard</Link>
               ) : (
                 <>
+                  <Link to="/search" className="hover:underline">Search</Link>
                   <Link to="/cart" className="hover:underline">Cart</Link>
                   <Link to="/orders" className="hover:underline">Orders</Link>
                   <Link to="/profile" className="hover:underline">Profile</Link>
