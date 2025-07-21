@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
       <nav className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center shadow-md">
         <div className="flex items-center gap-4">
           {/* 🍔 Menu Button for Mobile */}
-          <button onClick={toggleSidebar} className="md:hidden text-white">
+          <button onClick={toggleSidebar} className="lg:hidden text-white">
             <FaBars size={20} />
           </button>
           <Link to="/" className="text-xl font-bold">📚 BookStore</Link>
