@@ -45,17 +45,17 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <span>| Role: {user?.isAdmin ? 'Welcome Admin' : 'Welcome User'}</span>
+              <span className='sm:hidden'>{user?.isAdmin ? 'Welcome Admin' : 'Welcome User'}</span>
               <span>|</span>
               {user?.isAdmin ? (
-                <Link to="/admin" className="hover:underline">Admin Dashboard</Link>
+                <Link to="/admin" className="hover:underline sm:hidden">Admin Dashboard</Link>
               ) : (
                 <>
                   <Link to="/search" className="hover:underline">Search</Link>
                   <Link to="/cart" className="hover:underline">Cart</Link>
                   <Link to="/orders" className="hover:underline">Orders</Link>
                   <Link to="/profile" className="hover:underline">Profile</Link>
-                  <Link to="/user" className="hover:underline">User Dashboard</Link>
+                  <Link to="/user" className="hover:underline sm:hidden">User Dashboard</Link>
                 </>
               )}
               <button
