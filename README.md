@@ -42,7 +42,8 @@ This web application comes with the following main pages and their functionaliti
 | **ForgotPasswordPage**     | Users can reset their password if they forget it.                                            |
 | **VerifyOtpPage**          | OTP verification is done for password reset or other security purposes.                      |
 | **HomePage**               | This is the main page where all books and categories are displayed.                          |
-| **AddBookPage / AddBooksPage** | Admin can add new books from here.                                                      |
+| **AddBookPage              | admin can add single book from here.
+| **AddBooksPage**           | Admin can add bulk books from here in one sort.                                                      |
 | **BookDetailsPage**        | Complete information about any book can be viewed here.                                      |
 | **UpdateBookPage**         | Admin can update book information.                                                           |
 | **DeleteBookPage**         | Admin can delete a book.                                                                    |
