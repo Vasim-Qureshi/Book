@@ -66,7 +66,7 @@ const SideMenu: React.FC<Props> = ({ isOpen, toggleSidebar }) => {
       </ul>
       <button
         onClick={handleLogout}
-        className="bg-white block space-y-4 text-blue-600 px-3 py-2 rounded hover:bg-blue-100"
+        className="bg-white block space-y-6 text-blue-600 hover:text-white px-3 py-2 rounded hover:bg-blue-600 trnsition"
       >
         Logout
       </button>
