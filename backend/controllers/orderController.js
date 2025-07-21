@@ -6,6 +6,7 @@ export const placeOrder = async (req, res) => {
   try {
     const userId = req.user._id;
     const {cartItems,Total, delivery, payment } = req.body;
+    console.log(cartItems, Total, delivery, payment);
 
     const cart = await Cart.findOne({ userId }).populate('items.productId');
 
@@ -34,8 +35,8 @@ export const placeOrder = async (req, res) => {
     });
 
     await Cart.findOneAndDelete({ userId });
-
     res.status(201).json(newOrder);
+
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Order failed", error: err.message });
