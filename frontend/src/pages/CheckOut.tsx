@@ -26,12 +26,14 @@ const CheckOut: React.FC = () => {
   const cartItems = (location.state as any)?.cartItems || []; // Get cart items from location state
   const total = (location.state as any)?.total || 0; // Get total from location state
 
-  console.log('Cart items:', cartItems);
-  console.log('Total:', total);
+  // console.log('Cart items:', cartItems);
+  // console.log('Total:', total);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await placeOrderWithAddress(cartItems,total,address, card);
+    console.log('Response from placeOrderWithAddress:', res);
+    
     const order = await res.json();
 
     if (res.ok) {
