@@ -26,19 +26,16 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <div className='sticky top-0 z-50 h-30 flex flex-col sm:hidden md:hidden lg:hidden'>
-      {/* 🔝 Top Navbar */}
+    <div className='sticky top-0 z-50 h-30 flex flex-col'>
       {/* 📱 Mobile Menu Button */}
+      <button onClick={toggleSidebar} className="lg:hidden text-white">
+        <FaBars size={20} />
+      </button>
       {/* 🟦 Navbar */}
-      <nav className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center shadow-md">
+      <nav className="bg-blue-600 text-white px-4 py-3 flex justify-between items-center shadow-md sm:hidden ">
         <div className="flex items-center gap-4">
-          {/* 🍔 Menu Button for Mobile */}
-          <button onClick={toggleSidebar} className="lg:hidden text-white">
-            <FaBars size={20} />
-          </button>
           <Link to="/" className="text-xl font-bold">📚 BookStore</Link>
         </div>
-
         <div className="space-x-4 text-sm hidden md:flex">
           {!isAuthenticated ? (
             <>
