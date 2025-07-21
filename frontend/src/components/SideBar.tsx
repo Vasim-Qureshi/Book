@@ -1,7 +1,9 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { FaTimes } from 'react-icons/fa';
+import { useAuth } from '../context/AuthContext';
+import { logout as LogOut } from '../services/authService';
 
 interface Props {
   isOpen: boolean;
@@ -18,6 +20,22 @@ const SideMenu: React.FC<Props> = ({ isOpen, toggleSidebar }) => {
     { name: 'About', path: '/about' },
     { name: 'Login', path: '/login' },
   ];
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      if (user) {
+        LogOut({ userId: user.id });
+        logout();
+      }
+      navigate('/login');
+      localStorage.removeItem('token');
+    } catch (error) {
+      alert('Logout failed. Please try again.');
+    }
+  };
+
 
   return (
     <motion.div
@@ -46,6 +64,13 @@ const SideMenu: React.FC<Props> = ({ isOpen, toggleSidebar }) => {
           </li>
         ))}
       </ul>
+      <button
+        onClick={handleLogout}
+        className="bg-white text-blue-600 px-3 py-1 rounded hover:bg-blue-100 ml-2"
+      >
+        Logout
+      </button>
+
     </motion.div>
   );
 };
