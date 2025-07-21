@@ -24,7 +24,7 @@ const SideMenu: React.FC<Props> = ({ isOpen, toggleSidebar }) => {
       initial={{ x: '-100%' }}
       animate={{ x: isOpen ? 0 : '-100%' }}
       transition={{ duration: 0.3 }}
-      className="fixed top-0 left-0 w-64 h-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white z-50 p-5 shadow-lg md:hidden"
+      className="fixed top-0 left-0 w-64 h-full bg-gradient-to-br from-blue-600 to-indigo-700 text-white z-50 p-5 shadow-lg lg:hidden"
     >
       <div className="flex justify-between items-center mb-6">
         <h2 className="text-lg font-semibold">Menu</h2>
