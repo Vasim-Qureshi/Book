@@ -32,6 +32,7 @@ const CheckOut: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     const res = await placeOrderWithAddress(cartItems,total,address, card);
+    console.log("cartItems:", cartItems," total:", total, "address:", address, "card:", card);
     console.log('Response from placeOrderWithAddress:', res);
     
     const order = await res.json();
