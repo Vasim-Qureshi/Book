@@ -58,13 +58,28 @@ const BookDetailsPage: React.FC = () => {
 
       // Update cart without mutating existing state
       setCartItems(prev => {
-        const exists = prev.find(item => item._id === book._id);
+        const exists = prev.find(item => item.productId === book._id);
         if (exists) {
           return prev.map(item =>
-            item._id === book._id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
+            item.productId === book._id ? { ...item, quantity: (item.quantity || 1) + 1 } : item
           );
         }
-        return [...prev, { ...book, quantity: 1 }];
+        // Ensure all required CartItem fields are present
+        return [
+          ...prev,
+          {
+            id: `${user.id}-${book._id}`, // or use a unique id from backend if available
+            productId: book._id,
+            userId: user.id,
+            title: book.title,
+            author: book.author,
+            price: book.price,
+            imageUrl: book.imageUrl,
+            description: book.description,
+            category: book.category,
+            quantity: 1,
+          }
+        ];
       });
       console.log('Book added to cart:', book);
       console.log('Updated cart items:', cartItems);

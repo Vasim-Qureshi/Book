@@ -27,16 +27,16 @@ const OrderHistory: React.FC = () => {
           <h3 className="font-semibold">Order #{i + 1}</h3>
 
           <div className="text-sm mt-2 text-gray-700">
-            <p><strong>Name:</strong> {order.delivery.name}</p>
-            <p><strong>Phone:</strong> {order.delivery.phone}</p>
-            <p><strong>Address:</strong> {order.delivery.street}, {order.delivery.city}, {order.delivery.state} {order.delivery.zip}</p>
+            <p><strong>Name:</strong> {order.address.name}</p>
+            <p><strong>Phone:</strong> {order.address.phone}</p>
+            <p><strong>Address:</strong> {order.address.street}, {order.address.city}, {order.address.state} {order.address.zip}</p>
             <p><strong>Total:</strong> ₹{order.total}</p>
-            <p><strong>Paid by:</strong> ****{order.payment.cardNumber.slice(-4)}</p>
+            <p><strong>Paid by:</strong> ****{order.card.cardNumber.slice(-4)}</p>
           </div>
 
           <div className="mt-2">
             <h4 className="font-semibold">Items:</h4>
-            {order.products.map((item: any, j: number) => (
+            {order.cartItems.map((item: any, j: number) => (
               <p key={j}>
                 {item.productId.title} × {item.quantity} = ₹{item.productId.price * item.quantity}
               </p>

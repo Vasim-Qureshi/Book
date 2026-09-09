@@ -8,14 +8,14 @@ const URL = import.meta.env.VITE_BASE_URL || 'http://localhost:5000';
 
 const token = localStorage.getItem('token');
 
-export const placeOrderWithAddress = async (cartItems: any, total: any, delivery: any, payment: any) =>
+export const placeOrderWithAddress = async (cartItems: any, total: any, address: any, card: any) =>
   await fetch(`${URL}/api/orders`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       Authorization: `Bearer ${token}`,
     },
-    body: JSON.stringify({ cartItems, total, delivery, payment }),
+    body: JSON.stringify({ cartItems, total, address, card }),
   });
 
 export const getOrderById = async (orderId: string) =>

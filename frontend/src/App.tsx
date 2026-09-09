@@ -63,7 +63,7 @@ const App = () => {
           }
         />
         <Route
-          path="/receipt"
+          path="/receipt/:orderId"
           element={
             <ProtectedRoute role="user">
               <ReceiptPage />

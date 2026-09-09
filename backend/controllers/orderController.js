@@ -5,40 +5,54 @@ import Cart from "../models/CartItem.js";
 export const placeOrder = async (req, res) => {
   try {
     const userId = req.user._id;
-    const {cartItems,Total, delivery, payment } = req.body;
-    console.log(cartItems, Total, delivery, payment);
 
-    const cart = await Cart.findOne({ userId }).populate('items.productId');
+    const { cartItems, address, card = {} } = req.body;
 
-    if (!cart || cart.items.length === 0) {
+    if (!card.cardNumber || !card.expiry) {
+      return res.status(400).json({ message: "Payment card details missing" });
+    };
+    console.log(cartItems, address, card);
+
+    // Get cart from DB
+    const cartItem = await Cart.find({ userId }).populate("productId");
+
+    if (!cartItem || cartItem.length === 0) {
       return res.status(400).json({ message: "Cart is empty" });
     }
 
-    const products = cart.items.map(item => ({
+    // Prepare product list
+    const products = cartItem.map((item) => ({
       productId: item.productId._id,
       quantity: item.quantity,
     }));
 
-    const total = cart.items.reduce((acc, item) => acc + item.productId.price * item.quantity, 0);
+    // Calculate total
+    const total = cartItem.reduce(
+      (acc, item) => acc + item.productId.price * item.quantity,
+      0
+    );
 
-    const maskedCardNumber = '****' + payment.cardNumber.slice(-4);
+    // Mask card number
+    const maskedCardNumber = "****" + card.cardNumber.slice(-4); // Mask last 4 digits
 
+    // Create order
     const newOrder = await Order.create({
       userId,
       products,
       total,
-      delivery,
+      address,
       payment: {
         cardNumber: maskedCardNumber,
-        expiry: payment.expiry,
+        expiry: card.expiry,
       },
     });
 
-    await Cart.findOneAndDelete({ userId });
-    res.status(201).json(newOrder);
+    // Clear cart after order
+    await Cart.deleteMany({ userId });
 
+    res.status(201).json(newOrder);
   } catch (err) {
-    console.error(err);
+    console.error("Order error:", err);
     res.status(500).json({ message: "Order failed", error: err.message });
   }
 };

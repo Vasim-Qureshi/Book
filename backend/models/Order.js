@@ -4,47 +4,49 @@ const orderSchema = new mongoose.Schema(
   {
     userId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'User',
-      required: true
+      ref: "User",
+      required: true,
     },
     products: [
       {
         productId: {
           type: mongoose.Schema.Types.ObjectId,
-          ref: 'Book',
-          required: true
+          ref: "Book",
+          required: true,
         },
         quantity: {
           type: Number,
           required: true,
-          min: 1
-        }
-      }
+          min: 1,
+        },
+      },
     ],
     total: {
       type: Number,
       required: true,
-      min: 0
+      min: 0,
     },
     orderDate: {
       type: Date,
-      default: Date.now
+      default: Date.now,
     },
-    delivery: {
-    name: String,
-    phone: String,
-    street: String,
-    city: String,
-    state: String,
-    zip: String,
-  },
-  payment: {
-    cardNumber: String, // Store masked like '****1234'
-    expiry: String,
-  }
+    // ✅ renamed delivery → address
+    address: {
+      name: { type: String, required: true },
+      phone: { type: String, required: true },
+      street: { type: String, required: true },
+      city: { type: String, required: true },
+      state: { type: String, required: true },
+      zip: { type: String, required: true },
+    },
+    // ✅ keep payment details
+    payment: {
+      cardNumber: { type: String, required: true }, // masked like '****1234'
+      expiry: { type: String, required: true },
+    },
   },
   {
-    timestamps: true // Adds createdAt and updatedAt
+    timestamps: true, // Adds createdAt and updatedAt
   }
 );
 
