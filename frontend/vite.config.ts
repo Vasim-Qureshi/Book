@@ -7,6 +7,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [react(), tailwindcss()],
 
   esbuild: {
-    drop: mode === 'production' ? ['debugger'] : [],
+    drop: mode === 'production' ? ['console','debugger'] : [],
   },
 }))
